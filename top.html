@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>フリーテック | 20代エンジニア支援</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="sheestylet">
+
+  <style>
+    :root {
+      --bg-start: #0d0d0d;
+      --bg-end: #1a1a1a;
+      --card-bg: rgba(255,255,255,0.05);
+      --gold: #FFD700;
+      --text-light: #fff;
+      --shadow: rgba(0,0,0,0.6);
+    }
+    /* メニューバー */
+    .menu-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 36px;
+      height: 28px;
+      cursor: pointer;
+      z-index: 2000;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 100%;
+      height: 4px;
+      background: var(--gold);
+      margin: 6px 0;
+      border-radius: 2px;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 250px;
+      height: 100vh;
+      background: #111;
+      padding: 60px 20px;
+      box-shadow: -2px 0 8px rgba(0, 0, 0, 0.5);
+      transition: right 0.3s ease;
+      z-index: 1500;
+    }
+
+    .mobile-menu.active {
+      right: 0;
+    }
+
+    .mobile-menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .mobile-menu li {
+      margin-bottom: 20px;
+    }
+
+    .mobile-menu a {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    /* ベーススタイル */
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      color: #ccc;
+    }
+
+    /* ヘッダー（目立たせる） */
+    header {
+      background: linear-gradient(135deg, #000428, #004e92);
+      color: #fff;
+      text-align: center;
+      padding: 100px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+     /* ヘッダー内のテキストやボタンをオーバーレイより前に表示 */
+    header > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, transparent 20%, rgba(255,255,255,0.05) 20%, rgba(255,255,255,0.05) 80%, transparent 80%, transparent);
+      background-size: 50px 50px;
+      animation: rotate 20s linear infinite;
+      opacity: 0.3;
+    }
+
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+
+    header h1 {
+      font-size: 4rem; margin: 0.2em 0;
+      text-shadow: 0 0 20px rgba(255,255,255,0.8);
+      animation: glowText 2s infinite alternate;
+    }
+
+    @keyframes glowText {
+      from { text-shadow: 0 0 10px #fff, 0 0 20px #00e5ff, 0 0 30px #00e5ff; }
+      to   { text-shadow: 0 0 20px #fff, 0 0 30px #7cff00, 0 0 40px #7cff00; }
+    }
+
+    header p {
+      font-size: 1.4rem;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.7);
+    }
+    .cta {
+      display: flex; justify-content: center; gap: 12px; margin-top: 20px;
+    }
+
+    .cta button {
+      padding: 20px 40px; font-weight: bold;
+      font-size: 1.4rem;
+      border-radius: 50px;
+      background: linear-gradient(45deg, #FFD700, #FFC107);
+      color: #000; border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(255,193,7,0.6);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+    }
+
+    .cta button:hover {
+      transform: perspective(600px) translateZ(30px) scale(1.15) rotateX(5deg) rotateY(-5deg);
+      box-shadow: 0 0 40px rgba(255,193,7,1);
+    }
+    .pulse {
+      animation: pulseScale 1.6s infinite ease-in-out;
+      transform-origin: center;
+    }
+    @keyframes pulseScale {
+      0%, 100% {
+        tansform: scale(1);
+        box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
+      }
+      50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 30px rgba(255, 193, 7, 0.8);
+      }
+    }
+
+
+    section {
+      background: linear-gradient(135deg, rgba(20,20,20,0.9), rgba(40,40,40,0.9));
+      max-width: 1200px; margin: 40px auto;
+      padding: 40px 20px; border-radius: 12px;
+      box-shadow: 0 8px 24px var(--shadow);
+    }
+
+    h2 {
+      font-size: 2.4rem; color: var(--text-light);
+      text-align: center; margin-bottom: 1.5rem;
+      position: relative; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    h2::after {
+      content: ''; display: block;
+      width: 120px; height: 6px;
+      background: var(--gold);
+      margin: 10px auto 0; border-radius: 3px;
+    }
+    .greeting-section {
+      background: url('https://www.transparenttextures.com/patterns/old-moon.png'), linear-gradient(135deg, #2b2b2b, #1a1a1a);
+      padding: 60px 30px;
+      border: 3px solid #c0aa7d;
+      border-radius: 16px;
+      margin: 60px auto;
+      max-width: 1000px;
+      box-shadow: 0 0 24px rgba(255, 215, 0, 0.2);
+      font-family: 'Georgia', serif;
+      position: relative;
+    }
+
+    .greeting-section::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 20%, transparent 80%);
+      animation: rotateGlow 40s linear infinite;
+      opacity: 0.2;
+      z-index: 0;
+    }
+
+    @keyframes rotateGlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .greeting-section h2 {
+      font-size: 2.6rem;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 8px rgba(255,255,255,0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .greeting-section p {
+      font-size: 1.4rem;
+      color: #eee;
+      line-height: 1.9;
+      text-align: left;
+      max-width: 800px;
+      margin: 0 auto;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+      position: relative;
+      z-index: 1;
+    }
+    .greeting-section p span {
+      display: block;
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: var(--gold);
+    }
+
+    /* ===== サービス紹介 ===== */
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: 24px; justify-content: center;
+      margin-top: 20px;
+    }
+    .service-box {
+      background: var(--card-bg); padding: 32px;
+      border: 2px solid var(--gold);
+      border-radius: 12px;
+      box-shadow: 0 6px 24px var(--shadow);
+      font-weight: bold; text-align: center;
+      font-size: 1.5rem; color: var(--text-light);
+      backdrop-filter: blur(8px);
+      transition: 0.3s;
+    }
+    .service-box:hover {
+      transform: translateY(-6px) scale(1.04);
+      box-shadow: 0 12px 32px var(--shadow);
+    }
+    .pricing-section {
+      background: linear-gradient(135deg, #1e1c1a, #2f2c28);
+      padding: 60px 30px;
+      border: 3px double var(--gold);
+      border-radius: 20px;
+      margin: 60px auto;
+      max-width: 1000px;
+      box-shadow: 0 0 32px rgba(255, 215, 0, 0.25), inset 0 0 12px rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(4px);
+    }
+
+    .pricing-section h2 {
+      font-size: 2.6rem;
+      text-align: center;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-family: 'Georgia', serif;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 6px rgba(255,255,255,0.1);
+    }
+
+    .pricing-section p {
+      text-align: center;
+      color: #ddd;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      font-style: italic;
+    }
+
+    .pricing-section table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .pricing-section table td {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pricing-section table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .pricing-section table td:first-child {
+      font-weight: bold;
+      color: #f6d479;
+      width: 50%;
+      font-family: 'Georgia', serif;
+    }
+
+    .pricing-section table td:last-child {
+      text-align: right;
+      color: #ffffff;
+      white-space: pre-line;
+    }
+
+    /* ===== ロードマップ ===== */
+    .roadmap-wrapper { padding: 60px 0; }
+    .roadmap-header { text-align: center; margin-bottom: 40px; }
+    .roadmap-header h2 { font-size: 2.2rem; }
+    .roadmap {
+      display: flex; flex-direction: column;
+      align-items: center;
+      width: 90%; max-width: 800px;
+      margin: 0 auto; gap: 2.5rem;
+    }
+    .step {
+      padding: 1.5rem 2.5rem;
+      background: var(--card-bg);
+      color: var(--text-light);
+      font-weight: bold; text-align: center;
+      border-radius: 1rem;
+      box-shadow: 0 6px 24px var(--shadow);
+      font-size: 1.4rem;
+      min-width: 260px;
+      backdrop-filter: blur(10px);
+      transition: 0.3s;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    .step:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 16px 40px var(--shadow);
+    }
+    .step.final {
+    background: linear-gradient(135deg, #c0c0c0, #e0e0e0);
+    color: yellow;
+    font-size: 2.0rem;
+    padding: 2rem 3rem;
+    box-shadow: 0 0 20px rgba(192, 192, 192, 0.6);
+    }
+
+    .connector {
+      width: 14px;
+      background: var(--gold);
+      border-radius: 7px;
+      box-shadow: 0 0 32px var(--gold);
+      animation: pulse 2s infinite ease-in-out;
+    }
+    .connector.vertical { height: 5rem; }
+    .connector.vertical.short { height: 2.5rem; }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 12px var(--gold); }
+      50%    { box-shadow: 0 0 64px var(--gold); }
+    }
+    .branch {
+      display: flex; justify-content: center;
+      gap: 8rem; width: 100%;
+    }
+    .branch-col {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 1.5rem;
+    }
+    .branch-labels {
+      display: flex;
+      justify-content: center;
+      gap: 10rem;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-light);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    .label {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 2px solid var(--gold);
+      box-shadow: 0 4px 16px var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+    .tooltip {
+      position: relative;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #FFD700;
+      color: #000000;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 10px 14px;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .tooltip:hover::after {
+      opacity: 1;
+    }
+
+    .roadmap {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .step {
+      background-color: var(--card-bg);
+      padding: 16px 24px;
+      border-radius: 8px;
+      color: var(--text-light);
+      font-weight: bold;
+      font-size: 1.4rem;
+      border: 1px solid var(--gold);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .branch-labels {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 30px;
+      font-size: 1.3rem;
+      color: var(--text-light);
+      font-weight: bold;
+    }
+
+    .branch {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      margin-top: 20px;
+    }
+
+    .branch-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    /* ===== 対象者 ===== */
+    .target-wrapper {
+      margin-top: 40px;
+      background: linear-gradient(135deg, #0b2c47, #132f55);
+      padding: 30px; border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 136, 255, 0.25);
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    .target-wrapper p {
+      font-size: 1.6rem; font-weight: bold;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    .target-item {
+      font-size:1.5rem; color:#eee; margin:8px 0;
+    }
+    /* ===== 案件紹介 ===== */
+    .project-container {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 32px;
+      margin-top: 20px;
+    }
+    .project-box {
+      width: 340px; padding: 30px;
+      background: var(--card-bg);
+      border: 2px solid var(--gold);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px var(--shadow);
+      transition: 0.3s;
+      backdrop-filter: blur(8px);
+    }
+    .project-box:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 16px 40px var(--shadow);
+    }
+    .project-name {
+      font-size: 1.6rem; font-weight: bold;
+      color: var(--gold);
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    .project-details li {
+      font-size: 1.1rem; margin: 10px 0;
+      color: #eee;
+    }
+    /* ===== FAQ ===== */
+    .faq {
+      margin-top: 40px;
+      background: var(--card-bg);
+      padding: 32px; border-radius: 12px;
+      box-shadow: 0 8px 32px var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+    .faq dt {
+      font-size: 1.3rem; font-weight: bold;
+      background: var(--gold);
+      color: var(--bg-start);
+      padding: 12px; border-radius: 8px;
+      margin-top: 24px;
+      box-shadow: 0 4px 16px var(--shadow);
+      text-shadow: 0 2px 4px rgba(255,255,255,0.6);
+    }
+    .faq dt::before { content: "💬 "; }
+    .faq dd {
+      margin: 12px 0 24px;
+      padding: 16px; background: #222;
+      border-left: 4px solid var(--gold);
+      border-radius: 8px;
+      color: #ccc;
+    }
+    @media screen and (max-width:600px) {
+      .branch { flex-direction: column; gap: 2rem; }
+      .service-grid { grid-template-columns: 1fr; }
+      section { padding: 20px 10px; }
+    }
+    /* 「対象者」と「案件の一例」のみに適用するライト線アニメーション */
+    .target-wrapper, .project-box {
+      position: relative;
+    }
+    .target-wrapper::before,
+    .project-box::before {
+      content: "";
+      position: absolute;
+      top: -2px; left: -2px;
+      right: -2px; bottom: -2px;
+      z-index: -1;
+      border-radius: inherit;
+      opacity: 0;
+      filter: blur(8px);
+      animation: glow-border 3s infinite alternate;
+    }
+    /* カテゴリー別のカラー指定 */
+    .target-wrapper::before {
+      background: linear-gradient(45deg, transparent, #ff9100, transparent); /* オレンジ系 */
+    }
+    .project-box::before {
+      background: linear-gradient(45deg, transparent, #ff3dac, transparent); /* ピンク系 */
+    }
+
+    @keyframes glow-border {
+      0% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.02);
+      }
+      100% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+    }
+    .step.line {
+      background: rgba(0, 200, 0, 0.2);
+    }
+
+    .step.zoom {
+      background: rgba(0, 120, 255, 0.2);
+    }
+
+    .step.discord {
+      background: rgba(114, 137, 218, 0.2);
+    }
+    /* ロードマップ囲み装飾 */
+    .roadmap {
+      position: relative;
+      padding: 2rem;
+      border: solid 2px #66ccff;
+      border-radius: 16px;
+      background-clip: padding-box;
+      animation: pulse-border 3s ease-in-out infinite;
+      box-shadow: 0 0 24px rgba(102, 204, 255, 0.6);
+    }
+</style>
+</head>
+<body>
+  <div class="menu-toggle" aria-label="メニュー" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <nav class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#greeting">ご挨拶</a></li>
+      <li><a href="#services">サービス紹介</a></li>
+      <li><a href="#pricing">料金について</a></li>
+      <li><a href="#roadmap">ロードマップ</a></li>
+      <li><a href="#target">対象者</a></li>
+      <li><a href="#projects">案件の一例</a></li>
+      <li><a href="#faq">よくある質問</a></li>
+    </ul>
+  </nav>
+  
+  <header style="position: relative; background: linear-gradient(135deg, #0f0f0f, #1a1a1a); background-size: cover; background-position: center; overflow: hidden; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <!-- 背景用のcanvas要素（マトリックス風のコードアニメーション） -->
+    <canvas id="codeCanvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:0;"></canvas>
+  
+    <!-- ヘッダー内のメインタイトルとCTA -->
+    <h1>AI時代に活躍できる</h1>
+    <h1>エンジニア育成プログラム</h1>
+    <p>～ 現役エンジニアによるマンツーマンサポートであなたの理想の案件へ ～</p>
+  
+    <!-- CTAボタン群 -->
+    <div class="cta">
+      <a href="https://line.me/R/ti/p/@107giyet" target="_blank" style="text-decoration: none;">
+        <button class="pulse">公式LINE登録➡無料で相談</button>
+      </a>
+    </div>
+  </header>
+  <section id="greeting" class="greeting-section">
+    <h2>ご挨拶</h2>
+    <p>
+      日本のIT人材不足は深刻で、経済産業省の調査では2030年には最大79万人のIT人材が不足すると言われています。<br>
+      そんな中、私は元々ITとは無縁の地方公務員として働いていましたが、退職後に5か月間集中して学習した結果、未経験からエンジニアとしてキャリアをスタートすることができ、初年度から月収50万円（手取り）を達成しました。<br>
+      この経験を通じて、スキルのない状態からでも十分にキャリアチェンジが可能であることを確信しています。<br>
+      現在はSEの傍らITコンサルとしても活動しており、これからエンジニアを目指す方に対して、私自身が実践して成果を出した勉強法、スキルシート作成、面談対策などの具体的なノウハウを提供しています。<br>
+      特にSES業界では20代エンジニアの8割が退職代行を利用するというデータもあり、キャリアに悩みを抱える方が多い現状です。<br>
+      だからこそ、より成長を実感でき、やりがいを持って働ける案件に出会えるような支援を全力で行っていきます。<br>
+      「スキルがないから無理かも」──そんな不安を一緒に乗り越えましょう。<br>
+      <span>代表：佐藤 大文（さとう ひろふみ）</span>
+    </p>
+  </section>
+
+
+  <section id="services" class="services-section">
+    <h2>サービス紹介</h2>
+    <div class="service-grid">
+      <div class="service-box">キャリアプランの提案</div>
+      <div class="service-box">スキルシート作成補助</div>
+      <div class="service-box">面接対策サポート</div>
+      <div class="service-box">案件マッチングサポート</div>
+    </div>
+  </section>
+  <section class="pricing-section" style="max-width: 1000px; margin: 40px auto; background: rgba(255,255,255,0.02); padding: 40px 20px; border-radius: 12px; box-shadow: 0 0 24px rgba(255, 255, 255, 0.1);">
+    <h2 style="text-align: center; color: var(--gold);">料金について</h2>
+    <p style="text-align: center; color: #ccc; font-size: 1.1rem; margin-bottom: 2rem;">各種サポート費用は、案件参画後に手数料をいただく成果報酬型の仕組みです。</p>
+    <table style="width: 100%; border-collapse: collapse; font-size: 1.2rem; color: #eee;">
+      <tbody>
+        <tr><td style="padding: 12px; border-bottom: 1px solid #555;">初回相談</td><td style="padding: 12px; border-bottom: 1px solid #555;">無料</td></tr>
+        <tr><td style="padding: 12px; border-bottom: 1px solid #555;">講座受講料</td><td style="padding: 12px; border-bottom: 1px solid #555;">0円（※途中退会時は5万円（税別））</td></tr>
+        <tr><td style="padding: 12px; border-bottom: 1px solid #555;">教材費</td><td style="padding: 12px; border-bottom: 1px solid #555;">1,500円（1冊のみご準備いただきます）</td></tr>
+        <tr><td style="padding: 12px; border-bottom: 1px solid #555;">スキルシート作成・添削</td><td style="padding: 12px; border-bottom: 1px solid #555;">無料</td></tr>
+        <tr><td style="padding: 12px; border-bottom: 1px solid #555;">案件先営業サポート</td><td style="padding: 12px; border-bottom: 1px solid #555;">無料</td></tr>
+        <tr><td style="padding: 12px; border-bottom: 1px solid #555;">面談対策</td><td style="padding: 12px; border-bottom: 1px solid #555;">無料</td></tr>
+        <tr><td style="padding: 12px; border-bottom: 1px solid #555;">稼働後サポート</td><td style="padding: 12px; border-bottom: 1px solid #555;">無料（継続支援）</td></tr>
+      </tbody>
+    </table>
+  </section>
+  <div class="cta">
+    <a href="https://line.me/R/ti/p/@107giyet" target="_blank" style="text-decoration: none;">
+      <button class="pulse">公式LINE登録➡無料で相談</button>
+    </a>
+  </div>
+
+  <section id="roadmap" class="roadmap-wrapper">
+    <div class="roadmap-header">
+      <h2>ロードマップ</h2>
+    </div>
+    <div class="roadmap">
+      <div class="step tooltip" data-tooltip="LINE登録後にカウンセリング日程をご案内します">LINE相談</div>
+      <div class="connector vertical"></div>
+      <div class="step tooltip" data-tooltip="目標や現在地をお伺いし最適なステップをご提案します">Zoom面談</div>
+      <div class="connector vertical"></div>
+      <div class="step tooltip" data-tooltip="学習や情報共有・案件紹介はすべて専用Discordで行います">Discordに招待</div>
+      
+      
+      <div class="branch-labels">
+        <div class="label">🔹経験者</div>
+        <div class="label">🔸未経験者</div>
+      </div>
+  
+      <div class="branch">
+        <div class="branch-col">
+          <div class="step tooltip" data-tooltip="これまでの職務経験や技術スキルをヒアリングし、強みを引き出す添削を行います">スキルシート添削</div>
+          <div class="connector vertical short"></div>
+          <div class="step tooltip" data-tooltip="目指す条件に合う案件を厳選し、企業とのマッチングをサポートします">案件先面談</div>
+        </div>
+        <div class="branch-col">
+          <div class="step tooltip" data-tooltip="基本的なITスキルや実務に必要な技術の学習期間です">勉強（約6か月）</div>
+          <div class="connector vertical short"></div>
+          <div class="step tooltip" data-tooltip="未経験でも通過率が上がるような構成と表現でスキルシートを一緒に作成します">スキルシート作成</div>
+          <div class="connector vertical short"></div>
+          <div class="step tooltip" data-tooltip="面接を想定した質問対策や企業ごとの傾向に合わせたアドバイスを実施します">案件先面談</div>
+        </div>
+      </div>
+      <div class="connector vertical"></div>
+      <div class="step final tooltip" data-tooltip="参画後も定期的な面談や技術・メンタル面のサポートを提供します">案件参画</div>
+    </div>
+  </section>
+
+  <section id="target" class="target-wrapper">
+    <h2>対象者</h2>
+    <div class="target-item">異業種から転職を検討中の20～30代</div>
+    <div class="target-item">IT企業からフリーランスへ移行を検討中の方</div>
+    <div class="target-item">スキルチェンジ希望者（フロントエンド→バックエンド）</div>
+  </section>
+  <section id="projects">
+    <h2>案件の一例</h2>
+    <div class="project-container">
+      <div class="project-box">
+        <p class="project-name">Sさん</p>
+        <ul class="project-details">
+          <li>【月単価】50万円～</li>
+          <li>【業務内容】大手メーカーのバッチ開発</li>
+          <li>【場所】フルリモート</li>
+          <li>【働き方】準委任契約 / 週5稼働</li>
+        </ul>
+      </div>
+      <div class="project-box">
+        <p class="project-name">Oさん</p>
+        <ul class="project-details">
+          <li>【月単価】65万円～</li>
+          <li>【業務内容】Java を用いた Web アプリ開発</li>
+          <li>【場所】週1出社・他リモート</li>
+          <li>【働き方】準委任契約 / 週5稼働</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <div class="cta">
+    <a href="https://line.me/R/ti/p/@107giyet" target="_blank" style="text-decoration: none;">
+      <button class="pulse">公式LINE登録➡無料で相談</button>
+    </a>
+  </div>
+  <section id="faq">
+    <h2>よくある質問（Q＆A）</h2>
+    <dl class="faq">
+      <dt>Q．紹介料や費用はかかりますか？</dt>
+      <dd>教材費1500円のみ必要です。他は企業負担。</dd>
+      <dt>Q．実務経験がないのですが大丈夫ですか？</dt>
+      <dd>問題ありません。学習＆稼働サポートを提供します。</dd>
+      <dt>Q．登録後はどんな流れになりますか？</dt>
+      <dd>LINE登録後、Zoom面談を通じて現在の状況や目標をヒアリングさせていただきます。
+        その後、Discordでのサポート・案件の提案を行います。</dd>
+        <dt>Q．パソコンやその他の機器は必要ですか？</dt>
+      <dd>パソコンは必須です。ですが、中古の安価なPCで大丈夫です。</dd>
+      <dt>Q．年齢制限はありますか？</dt>
+      <dd>基本的には20代～30代前半の方を対象としています。</dd>
+      <dt>Q．地方で仕事をしながら学習をすることは可能でしょうか？</dt>
+      <dd>学習・面談は全てリモートで実施するため可能です。</dd>
+    </dl>
+  </section>
+  <script defer src="script.js"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
