@@ -1,13 +1,59 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!-- 文字セット・ビュー幅 -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>フリーテック | 20代エンジニア支援</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="sheestylet">
+  <!-- タイトル -->
+  <title>【公式】フリーテック | 20代エンジニア向け育成プログラム・無料相談</title>
 
+  <!-- ★1. メタディスクリプション（検索結果の説明文） -->
+  <meta name="description"
+        content="未経験から月収50万達成の代表自らマンツーマン指導。キャリアプラン提案、スキルシート作成、面接対策、案件マッチングまでフルサポート。公式LINEで無料相談受付中。">
+
+  <!-- ★2. 検索エンジン向け -->
+  <link rel="canonical" href="https://freetech.jp/">
+  <meta name="robots" content="index,follow">
+
+  <!-- ★3. Open Graph（Facebook, LINE など） -->
+  <meta property="og:locale"      content="ja_JP">
+  <meta property="og:site_name"   content="フリーテック">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://freetech.jp/">
+  <meta property="og:title"       content="【公式】フリーテック｜20代エンジニア育成プログラム">
+  <meta property="og:description" content="未経験から月収50万達成の代表によるマンツーマンサポート。学習法から案件紹介までワンストップ支援。">
+  <!-- バナー画像（1200×630 推奨） -->
+  <meta property="og:image"        content="https://freetech.jp/assets/og-banner.png">
+  <meta property="og:image:width"  content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- ★4. Twitter カード -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:site"        content="@あなたのTwitterアカウント">  <!-- 任意 -->
+  <meta name="twitter:title"       content="【公式】フリーテック｜20代エンジニア育成プログラム">
+  <meta name="twitter:description" content="未経験から月収50万達成の代表によるマンツーマンサポート。学習法から案件紹介までワンストップ支援。">
+  <meta name="twitter:image"       content="https://freetech.jp/assets/og-banner.png">
+
+  <!-- ★5. JSON-LD（構造化データ：Organization） -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "フリーテック",
+    "url": "https://freetech.jp/",
+    "logo": "https://freetech.jp/assets/og-banner.png",
+    "sameAs": [
+      "https://www.facebook.com/あなたのページ",
+      "https://twitter.com/あなたのアカウント",
+      "https://www.linkedin.com/in/あなたのプロフィール"
+    ]
+  }
+  </script>
+
+  <!-- ★6. フォントや CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet">
   <style>
     :root {
       --bg-start: #0d0d0d;
@@ -629,8 +675,8 @@
   
     <!-- ヘッダー内のメインタイトルとCTA -->
     <h1>AI時代に活躍できる</h1>
-    <h1>エンジニア育成プログラム</h1>
-    <p>～ 現役エンジニアによるマンツーマンサポートであなたの理想の案件へ ～</p>
+    <h1>エンジニア育成プログラム：AI時代に活躍する20代を支援</h1>
+    <h2>現役エンジニアによるマンツーマンサポート</h2>
   
     <!-- CTAボタン群 -->
     <div class="cta">
@@ -639,6 +685,7 @@
       </a>
     </div>
   </header>
+  <main>
   <section id="greeting" class="greeting-section">
     <h2>ご挨拶</h2>
     <p>
@@ -772,6 +819,7 @@
       <dd>学習・面談は全てリモートで実施するため可能です。</dd>
     </dl>
   </section>
+  </main>
   <script defer src="script.js"></script>
   <script>
     function toggleMenu() {
